@@ -25,7 +25,7 @@ entries:
       name: mogaal
     name: adminer
     urls:
-    - https://mogaal.github.io/adminer-0.1.0.tgz
+    - adminer-0.1.0.tgz
     version: 0.1.0
   prometheus-yace-exporter:
   - apiVersion: v1
@@ -46,6 +46,6 @@ entries:
     sources:
     - https://github.com/ivx/yet-another-cloudwatch-exporter
     urls:
-    - https://mogaal.github.io/prometheus-yace-exporter-0.1.0.tgz
+    - prometheus-yace-exporter-0.1.0.tgz
     version: 0.1.0
 generated: "2021-01-21T10:44:10.314431072Z"
