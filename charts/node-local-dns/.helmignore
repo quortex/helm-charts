@@ -21,3 +21,6 @@
 .idea/
 *.tmproj
 .vscode/
+# Development
+Makefile
+README.md.gotmpl
