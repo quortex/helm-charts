@@ -1,0 +1,75 @@
+# Default values for node-local-dns.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# --  Helm's name computing override.
+nameOverride: ""
+# --  Helm's fullname computing override.
+fullnameOverride: ""
+
+image:
+  # -- node-local-dns image repository.
+  repository: k8s.gcr.io/dns/k8s-dns-node-cache
+  # -- node-local-dns container image pull policy.
+  pullPolicy: IfNotPresent
+  # -- node-local-dns image tag (default is the chart appVersion).
+  tag: ""
+
+# --  A list of secrets used to pull containers images.
+imagePullSecrets: []
+
+serviceAccount:
+  # -- Specifies whether a service account should be created
+  create: true
+  # -- Annotations to add to the service account
+  annotations: {}
+  # -- The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+# --  An update strategy to replace existing DaemonSet pods with new pods.
+updateStrategy:
+  rollingUpdate:
+    maxUnavailable: 10%
+
+# -- If specified, indicates the pod's priority.
+priorityClassName: system-node-critical
+
+# -- node-local-dns container security context.
+securityContext:
+  privileged: true
+
+# -- node-local-dns resources.
+resources:
+  requests:
+    cpu: 25m
+    memory: 5Mi
+
+# --  Node labels for pod assignment.
+nodeSelector: {}
+
+# --  Node tolerations for scheduling to nodes with taints.
+tolerations:
+  - key: CriticalAddonsOnly
+    operator: Exists
+  - effect: NoExecute
+    operator: Exists
+  - effect: NoSchedule
+    operator: Exists
+
+# --  Affinity for pod assignment.
+affinity: {}
+# --  Annotations to be added to pods.
+podAnnotations: {}
+# -- Security contexts to set for all containers of the pod.
+podSecurityContext: {}
+
+# -- node-local-dns configuration.
+# Get more information on kubernetes documentation https://kubernetes.io/docs/tasks/administer-cluster/nodelocaldns/.
+config:
+  # -- localDns is the local listen IP address chosen for NodeLocal DNSCache.
+  localDns: 169.254.20.10
+  # -- The dns server address
+  # Could be retrieved with `kubectl get svc kube-dns -n kube-system -o jsonpath={.spec.clusterIP}`
+  dnsServer: ""
+  clusterDomain: cluster.local
