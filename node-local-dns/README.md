@@ -6,6 +6,22 @@ NodeLocal DNSCache improves Cluster DNS performance by running a dns caching age
 
 Have a look on official documentation [Using NodeLocal DNSCache in Kubernetes clusters](https://kubernetes.io/docs/tasks/administer-cluster/nodelocaldns/)
 
+## Installation
+
+1. Add github-public helm repository
+
+```sh
+helm repo add quortex-public https://quortex.github.io/helm-charts
+```
+
+2. Deploy the appropriate release in desired namespace.
+
+```sh
+helm install node-local-dns quortex-public/node-local-dns -n kube-system
+```
+
+:warning: Take care to pass config.dns server as mentioned in the values documentation.
+
 ## Values
 
 | Key | Type | Default | Description |
