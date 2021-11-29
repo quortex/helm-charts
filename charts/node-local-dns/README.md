@@ -1,6 +1,6 @@
 # node-local-dns
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.21.1](https://img.shields.io/badge/AppVersion-1.21.1-informational?style=flat-square)
+![Version: 0.1.1](https://img.shields.io/badge/Version-0.1.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.21.1](https://img.shields.io/badge/AppVersion-1.21.1-informational?style=flat-square)
 
 NodeLocal DNSCache improves Cluster DNS performance by running a dns caching agent on cluster nodes as a DaemonSet.
 
@@ -47,4 +47,11 @@ helm install node-local-dns quortex-public/node-local-dns -n kube-system
 | config | object | `{"clusterDomain":"cluster.local","dnsServer":"","localDns":"169.254.20.10"}` | node-local-dns configuration. Get more information on kubernetes documentation https://kubernetes.io/docs/tasks/administer-cluster/nodelocaldns/. |
 | config.localDns | string | `"169.254.20.10"` | localDns is the local listen IP address chosen for NodeLocal DNSCache. |
 | config.dnsServer | string | `""` | The dns server address Could be retrieved with `kubectl get svc kube-dns -n kube-system -o jsonpath={.spec.clusterIP}` |
+| config.clusterDomain | string | `"cluster.local"` | The cluster domain |
+| serviceMonitor.enabled | bool | `false` | If true, a ServiceMonitor CRD is created for a prometheus operator. https://github.com/coreos/prometheus-operator |
+| serviceMonitor.scheme | string | `"http"` | HTTP scheme to use for scraping. |
+| serviceMonitor.labels | object | `{}` | Labels to add to ServiceMonitor. |
+| serviceMonitor.interval | string | `"15s"` | Interval at which metrics should be scraped. |
+| serviceMonitor.scrapeTimeout | string | `"15s"` | Timeout after which the scrape is ended. |
+| serviceMonitor.relabelings | list | `[]` | Relabelling configuration (dynamic rewriting of the label set). |
 
