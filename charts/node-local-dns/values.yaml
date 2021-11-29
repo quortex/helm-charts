@@ -72,6 +72,7 @@ config:
   # -- The dns server address
   # Could be retrieved with `kubectl get svc kube-dns -n kube-system -o jsonpath={.spec.clusterIP}`
   dnsServer: ""
+  # -- The cluster domain
   clusterDomain: cluster.local
 
 serviceMonitor:

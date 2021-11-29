@@ -47,6 +47,7 @@ helm install node-local-dns quortex-public/node-local-dns -n kube-system
 | config | object | `{"clusterDomain":"cluster.local","dnsServer":"","localDns":"169.254.20.10"}` | node-local-dns configuration. Get more information on kubernetes documentation https://kubernetes.io/docs/tasks/administer-cluster/nodelocaldns/. |
 | config.localDns | string | `"169.254.20.10"` | localDns is the local listen IP address chosen for NodeLocal DNSCache. |
 | config.dnsServer | string | `""` | The dns server address Could be retrieved with `kubectl get svc kube-dns -n kube-system -o jsonpath={.spec.clusterIP}` |
+| config.clusterDomain | string | `"cluster.local"` | The cluster domain |
 | serviceMonitor.enabled | bool | `false` | If true, a ServiceMonitor CRD is created for a prometheus operator. https://github.com/coreos/prometheus-operator |
 | serviceMonitor.scheme | string | `"http"` | HTTP scheme to use for scraping. |
 | serviceMonitor.labels | object | `{}` | Labels to add to ServiceMonitor. |

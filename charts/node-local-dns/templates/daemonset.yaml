@@ -42,7 +42,7 @@ spec:
             - -conf
             - "/etc/Corefile"
             - -upstreamsvc
-            - {{ include "node-local-dns.fullname" . | quote }}
+            - {{ include "node-local-dns.fullname" . }}-upstream
           ports:
             - containerPort: 53
               name: dns
