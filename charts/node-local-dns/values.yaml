@@ -73,3 +73,19 @@ config:
   # Could be retrieved with `kubectl get svc kube-dns -n kube-system -o jsonpath={.spec.clusterIP}`
   dnsServer: ""
   clusterDomain: cluster.local
+
+serviceMonitor:
+  # -- If true, a ServiceMonitor CRD is created for a prometheus operator.
+  # https://github.com/coreos/prometheus-operator
+  #
+  enabled: false
+  # -- HTTP scheme to use for scraping.
+  scheme: http
+  # -- Labels to add to ServiceMonitor.
+  labels: {}
+  # -- Interval at which metrics should be scraped.
+  interval: 15s
+  # -- Timeout after which the scrape is ended.
+  scrapeTimeout: 15s
+  # -- Relabelling configuration (dynamic rewriting of the label set).
+  relabelings: []
