@@ -2,6 +2,15 @@ apiVersion: v1
 entries:
   empty:
   - apiVersion: v2
+    created: "2022-05-18T07:13:53.202251736Z"
+    description: An empty chart to deploy arbitrary manifests.
+    digest: 10a3a80ed263e7bf7c2bc0d6557038c80658a56f2b11728e14404ed53121bbb1
+    name: empty
+    type: application
+    urls:
+    - https://github.com/quortex/helm-charts/releases/download/empty-1.0.0/empty-1.0.0.tgz
+    version: 1.0.0
+  - apiVersion: v2
     created: "2022-04-19T12:00:59.067153694Z"
     description: An empty chart to deploy arbitrary manifests.
     digest: c280d1a9f35bbb8350c6fd888cf7080ff0a8bf95502fca50eb24d4db3bba7f12
@@ -33,4 +42,4 @@ entries:
     urls:
     - https://github.com/quortex/helm-charts/releases/download/node-local-dns-0.1.0/node-local-dns-0.1.0.tgz
     version: 0.1.0
-generated: "2022-04-19T12:00:59.067163095Z"
+generated: "2022-05-18T07:13:53.202280837Z"
