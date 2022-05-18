@@ -2,12 +2,11 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-# -- A list of kubernetes manifests to include in the release. These manifests are
-# rendered via the tpl function.
-manifests: []
-  # - apiVersion: apps/v1
+# -- A string to evaluate as a template for rendering kubernetes manifests.
+manifests: ""
+  #   apiVersion: apps/v1
   #   kind: ConfigMap
   #   metadata:
-  #     name: my-configmap
+  #     name: {{ .name }}
   #   data:
-  #     something: V2hhdCBkaWQgeW91IGV4cGVjdCA/Cg==
+  #     something: {{ .something }}
