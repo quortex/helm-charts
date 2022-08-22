@@ -1,0 +1,164 @@
+# Default values for helm-controller-manager
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# -- ****** Value for the helm-controller *******
+helmController:
+  manager:
+    # -- Number of desired pods.
+    replicaCount: 1
+    # -- Pods annotation.
+    podannotations: {}
+      # prometheus.io/port: "8080"
+      # prometheus.io/scrape: "true"
+    podAnnotations: {}
+    extraArgs: {}
+    # log-level: info
+    image:
+      repository: ghcr.io/fluxcd/helm-controller
+      tag: v0.23.0
+      pullPolicy: IfNotPresent
+    livenessProbe:
+      failureThreshold: 3
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 1
+      httpGet:
+        path: /healthz
+        port: healthz
+        scheme: HTTP
+    readinessProbe:
+      failureThreshold: 3
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 1
+      httpGet:
+        path: /readyz
+        port: healthz
+        scheme: HTTP
+    ressources: {}
+      #limits:
+      #  cpu: "1"
+      #  memory: 1Gi
+      #requests:
+      #  cpu: 100m
+      #  memory: 64Mi
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+          - ALL
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
+
+    podSecurityContext:
+      fsGroup: 1337
+    podAnnotations: {}
+      # prometheus.io/scrape: "true"
+      # prometheus.io/port: "http-metrics"
+
+# -- ****** Value for the source-controller *******
+sourceController:
+  manager:
+    # -- Number of desired pods.
+    replicaCount: 1
+    # -- Pods annotation.
+    podannotations: {}
+      # prometheus.io/port: "8080"
+      # prometheus.io/scrape: "true"
+    podAnnotations: {}
+    image:
+      repository: ghcr.io/fluxcd/source-controller
+      tag: v0.27.0
+      pullPolicy: IfNotPresent
+    livenessProbe:
+      failureThreshold: 3
+      httpGet:
+        path: /healthz
+        port: healthz
+        scheme: HTTP
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 1
+    readinessProbe:
+      failureThreshold: 3
+      httpGet:
+        path: /
+        port: http
+        scheme: HTTP
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 1
+    resources: {}
+      #limits:
+      #  cpu: "1"
+      #  memory: 1Gi
+      #requests:
+      #  cpu: 50m
+      #  memory: 64Mi
+    strategy:
+      type: Recreate
+    podAnnotations: {}
+      # prometheus.io/scrape: "true"
+      # prometheus.io/port: "http-metrics"
+      # runAsNonRoot: true
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
+    podSecurityContext:
+      fsGroup: 1337
+
+    # -- Helm's name computing override.
+    nameOverride: ""
+
+    # -- Helm's fullname computing override.
+    fullnameOverride: ""
+
+kubeRBACProxy:
+  # -- Enable kube-rbac-proxy.
+  enabled: true
+  image:
+    # -- kube-rbac-proxy image repository.
+    repository: gcr.io/kubebuilder/kube-rbac-proxy
+    # -- kube-rbac-proxy image tag.
+    tag: v0.8.0
+    # -- kube-rbac-proxy image pull policy.
+    pullPolicy: IfNotPresent
+  # -- kube-rbac-proxy container required resources.
+  resources: {}
+
+serviceMonitor:
+  # -- Create a rtmp operator ServiceMonitor.
+  enabled: false
+  # -- Labels added to the ServiceMonitor.
+  additionalLabels: {}
+  # -- Annotations added to the ServiceMonitor.
+  annotations: {}
+  # -- Override prometheus operator scrapping interval.
+  interval: ""
+  # -- Override prometheus operator scrapping timeout.
+  scrapeTimeout: ""
+  # -- Relabellings to apply to samples before scraping.
+  relabelings: []
+
+serviceAccount:
+  # -- Create a rtmp operator ServiceAccount.
+  create: true
+  # -- Override rtmp operator ServiceAccount name.
+  name: ""
+  # -- Annotations added to the ServiceMonitor.
+  annotations: {}
+
+service:
+  type: ClusterIP
+  port: 80
+  clusterIps:
+    - 10.96.163.142

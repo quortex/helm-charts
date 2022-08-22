@@ -1,0 +1,61 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "helm-controller-operator.fullname" . }}
+  labels:
+    {{- include "helm-controller-operator.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.helmController.manager.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "helm-controller-operator.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        {{- range $key, $value := .Values.helmController.manager.podAnnotations }}
+        {{ $key }}: {{ $value | quote }}
+        {{- end }}
+      labels:
+        {{- include "helm-controller-operator.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+      - args:
+        - --watch-all-namespaces
+        - --enable-leader-election
+        env:
+        - name: RUNTIME_NAMESPACE
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+        {{- with .Values.helmController.manager.image }}
+        image: "{{ .repository }}:{{ .tag }}"
+        imagePullPolicy: {{ .pullPolicy }}
+        {{- end }}
+        name: manager
+        ports:
+        - containerPort: 8080
+          name: http-prom
+          protocol: TCP
+        - containerPort: 9440
+          name: healthz
+          protocol: TCP
+        {{- with .Values.helmController.manager }}
+        livenessProbe:
+          {{- toYaml .livenessProbe | nindent 10 }}
+        readinessProbe:
+          {{- toYaml .readinessProbe | nindent 10 }}
+        resources:
+          {{- toYaml .resources | nindent 10 }}
+        securityContext:
+          {{- toYaml .containerSecurityContext | nindent 10 }}
+        volumeMounts:
+        - mountPath: /tmp
+          name: temp
+      securityContext:
+        {{- toYaml .podSecurityContext | nindent 8 }}
+      {{- end }}
+      volumes:
+      - emptyDir: {}
+        name: temp
