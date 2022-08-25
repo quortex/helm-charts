@@ -2,14 +2,14 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "helm-controller-operator.fullname" . }}
+  name: {{ include "helm-controller-stack.helmControllerFullname" . }}
   labels:
-    {{- include "helm-controller-operator.labels" . | nindent 4 }}
+    {{- include "helm-controller-stack.helmControllerLabels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.helmController.manager.replicaCount }}
   selector:
     matchLabels:
-      {{- include "helm-controller-operator.selectorLabels" . | nindent 6 }}
+      {{- include "helm-controller-stack.helmControllerSelectorLabels" . | nindent 6 }}
   template:
     metadata:
       annotations:
@@ -17,18 +17,23 @@ spec:
         {{ $key }}: {{ $value | quote }}
         {{- end }}
       labels:
-        {{- include "helm-controller-operator.selectorLabels" . | nindent 8 }}
+        {{- include "helm-controller-stack.helmControllerLabels" . | nindent 8 }}
     spec:
       containers:
       - args:
         - --watch-all-namespaces
         - --enable-leader-election
+        {{- range $key, $value := .Values.helmController.manager.extraArgs }}
+        - "-{{ $key }}={{ $value }}"
+        {{- end }}
         env:
         - name: RUNTIME_NAMESPACE
           valueFrom:
             fieldRef:
               apiVersion: v1
               fieldPath: metadata.namespace
+        - name: SOURCE_CONTROLLER_LOCALHOST
+          value: {{ include "helm-controller-stack.sourceControllerFullname" . }}
         {{- with .Values.helmController.manager.image }}
         image: "{{ .repository }}:{{ .tag }}"
         imagePullPolicy: {{ .pullPolicy }}

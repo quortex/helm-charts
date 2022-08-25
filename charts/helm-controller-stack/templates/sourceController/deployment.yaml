@@ -2,14 +2,14 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "helm-controller-operator.fullname" . }}-source
+  name: {{ include "helm-controller-stack.sourceControllerFullname" . }}
   labels:
-    {{- include "helm-controller-operator.labels" . | nindent 4 }}-source
+    {{- include "helm-controller-stack.sourceControllerLabels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.sourceController.manager.replicaCount }}
   selector:
     matchLabels:
-      {{- include "helm-controller-operator.selectorLabels" . | nindent 6 }}-source
+      {{- include "helm-controller-stack.sourceControllerSelectorLabels" . | nindent 6 }}
   template:
     metadata:
       annotations:
@@ -17,7 +17,7 @@ spec:
         {{ $key }}: {{ $value | quote }}
         {{- end }}
       labels:
-      {{- include "helm-controller-operator.selectorLabels" . | nindent 8 }}-source
+        {{- include "helm-controller-stack.sourceControllerLabels" . | nindent 8 }}
     spec:
       containers:
       - args:
@@ -25,6 +25,9 @@ spec:
         - --enable-leader-election
         - --storage-path=/data
         - --storage-adv-addr=source-controller.$(RUNTIME_NAMESPACE).svc.cluster.local.
+        {{- range $key, $value := .Values.sourceControllerLabels.manager.extraArgs }}
+        - "-{{ $key }}={{ $value }}"
+        {{- end }}
         env:
         - name: RUNTIME_NAMESPACE
           valueFrom:

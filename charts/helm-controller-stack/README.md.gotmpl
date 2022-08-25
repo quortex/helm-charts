@@ -24,7 +24,7 @@ helm repo add quortex-public https://quortex.github.io/helm-charts
 2. Deploy the appropriate release in desired namespace.
 
 ```sh
-helm install helm-controller-operator quortex-public/helm-controller-operator -n helm-system
+helm install helm-controller-stack quortex-public/helm-controller-stack -n helm-system
 ```
 
 :warning: Take care to pass config.dns server as mentioned in the values documentation.

@@ -22,11 +22,11 @@ all: generate doc
 generate: yq kustomize
 	@TMPDIR=$$(mktemp -d) && git clone --branch ${TAG_USED} --single-branch --depth 1 git@github.com:fluxcd/helm-controller.git $${TMPDIR}/repo && \
 	${YQ} -y '.metadata.name = ("PREFIX-" + .metadata.name)' $${TMPDIR}/repo/config/rbac/role.yaml | \
-		sed "s/PREFIX/{{ include \"helm-controller-operator.fullname\" . }}/" > ./templates/manager_role.yaml && \
+		sed "s/PREFIX/{{ include \"helm-controller-stack.fullname\" . }}/" > ./templates/manager_role.yaml && \
 	${KUSTOMIZE} build $${TMPDIR}/repo/config/default/ > $${TMPDIR}/result.yaml && \
 	${YQ} -y 'select(.kind=="CustomResourceDefinition")' $${TMPDIR}/result.yaml > ./crds/crds.yaml && \
 	${YQ} -y 'select(.kind=="ValidatingWebhookConfiguration" or .kind=="MutatingWebhookConfiguration")' $${TMPDIR}/result.yaml | \
-		sed -e 's|name: helm-controller-operator|name: {{ include \"helm-controller-operatorca-from: {{ .Release.Namespace }}/{{ include \"helm-controller-operator.fullname\" . }}-serving-cert|' \
+		sed -e 's|name: helm-controller-stack|name: {{ include \"helm-controller-stackca-from: {{ .Release.Namespace }}/{{ include \"helm-controller-stack.fullname\" . }}-serving-cert|' \
 			-e 's|namespace: .*|namespace: {{ .Release.Namespace }}|' > ./templates/webhooks.yaml; \
 	rm -rf $${TMPDIR}
 
