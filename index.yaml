@@ -19,6 +19,17 @@ entries:
     urls:
     - https://github.com/quortex/helm-charts/releases/download/empty-0.1.0/empty-0.1.0.tgz
     version: 0.1.0
+  helm-controller-stack:
+  - apiVersion: v2
+    created: "2022-08-30T09:54:07.7652885Z"
+    description: A Helm controller chart for Kubernetes allowing one to declaratively
+      manage Helm chart releases
+    digest: 8dfe1de261dc14de8133f551ce64aeab2f0cb48375254e25d8a0483c90c5abb4
+    name: helm-controller-stack
+    type: application
+    urls:
+    - https://github.com/quortex/helm-charts/releases/download/helm-controller-stack-0.1.0/helm-controller-stack-0.1.0.tgz
+    version: 0.1.0
   node-local-dns:
   - apiVersion: v2
     appVersion: 1.21.1
@@ -42,4 +53,4 @@ entries:
     urls:
     - https://github.com/quortex/helm-charts/releases/download/node-local-dns-0.1.0/node-local-dns-0.1.0.tgz
     version: 0.1.0
-generated: "2022-05-18T07:13:53.202280837Z"
+generated: "2022-08-30T09:54:07.765304401Z"
