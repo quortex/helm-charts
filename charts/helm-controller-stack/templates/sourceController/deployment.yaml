@@ -25,7 +25,7 @@ spec:
         - --enable-leader-election
         - --storage-path=/data
         - --storage-adv-addr=source-controller.$(RUNTIME_NAMESPACE).svc.cluster.local.
-        {{- range $key, $value := .Values.sourceControllerLabels.manager.extraArgs }}
+        {{- range $key, $value := .Values.sourceController.manager.extraArgs }}
         - "-{{ $key }}={{ $value }}"
         {{- end }}
         env:
