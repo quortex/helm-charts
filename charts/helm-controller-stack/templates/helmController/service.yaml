@@ -1,0 +1,22 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "helm-controller-stack.fullname" . }}-metrics-service
+  labels:
+    {{- include "helm-controller-stack.labels" . | nindent 4 }}
+spec:
+  ports:
+    {{- if .Values.kubeRBACProxy.enabled }}
+    - name: https-metrics
+      port: 8443
+      targetPort: https-metrics
+      protocol: TCP
+    {{- else }}
+    - name: http-metrics
+      port: 8080
+      targetPort: http-metrics
+      protocol: TCP
+    {{- end }}
+  selector:
+    {{- include "helm-controller-stack.selectorLabels" . | nindent 4 }}

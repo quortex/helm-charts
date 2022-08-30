@@ -1,0 +1,184 @@
+# Default values for helm-controller-manager
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Value for the helm-controller
+helmController:
+  manager:
+    # -- Number of desired pods.
+    replicaCount: 1
+    # -- Pods annotation.
+    podAnnotations: {}
+      # prometheus.io/port: "8080"
+      # prometheus.io/scrape: "true"
+    extraArgs: {}
+    # log-level: info
+    image:
+      # -- helm-controller image repository.
+      repository: ghcr.io/fluxcd/helm-controller
+      # -- helm-controller container image pull policy.
+      pullPolicy: IfNotPresent
+      # -- helm-controller image tag (default is the chart appVersion).
+      tag: v0.23.0
+    # -- helm-controller livenessProbe.
+    livenessProbe:
+      # -- Number of failure threshold liveness probe.
+      failureThreshold: 3
+      # -- helm-controller time interval liveness probe
+      periodSeconds: 10
+      # -- helm-controller success threshold liveness probe
+      successThreshold: 1
+      # -- helm-controller timeout seconds liveness probe
+      timeoutSeconds: 1
+      # -- helm-controller HTTP request.
+      httpGet:
+        path: /healthz
+        port: healthz
+        scheme: HTTP
+    readinessProbe:
+      # -- Number of failure threshold readiness probe.
+      failureThreshold: 3
+      # -- helm-controller time interval liveness probe
+      periodSeconds: 10
+      # -- helm-controller success threshold liveness probe
+      successThreshold: 1
+      # -- helm-controller timeout seconds liveness probe
+      timeoutSeconds: 1
+      # -- helm-controller HTTP request.
+      httpGet:
+        path: /readyz
+        port: healthz
+        scheme: HTTP
+    # -- Container ressources.
+    ressources: {}
+      #limits:
+      #  cpu: "1"
+      #  memory: 1Gi
+      #requests:
+      #  cpu: 100m
+      #  memory: 64Mi
+    # -- Security contexts to set for all containers of the pod.
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+          - ALL
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
+    # -- Security contexts to set for all pod of the nodes.
+    podSecurityContext:
+      fsGroup: 1337
+
+# Value for the source-controller
+sourceController:
+  manager:
+    # -- Number of desired pods.
+    replicaCount: 1
+    # -- Pods annotation.
+    podAnnotations: {}
+      # prometheus.io/scrape: "true"
+      # prometheus.io/port: "http-metrics"
+      # runAsNonRoot: true
+    extraArgs:
+    # log-level: info
+    image:
+      # -- source-controller image repository.
+      repository: ghcr.io/fluxcd/source-controller
+      # -- source-controller container image pull policy.
+      pullPolicy: IfNotPresent
+      # -- source-controller image tag (default is the chart appVersion).
+      tag: v0.27.0
+    # -- source-controller liveness probe.
+    livenessProbe:
+      # -- Number of failure threshold.
+      failureThreshold: 3
+      # -- source-controller liveness probe HTTP request.
+      httpGet:
+        path: /healthz
+        port: healthz
+        scheme: HTTP
+      # -- source-controller time interval liveness probe
+      periodSeconds: 10
+      # -- source-controller success threshold liveness probe
+      successThreshold: 1
+      # -- source-controller timeout seconds liveness probe
+      timeoutSeconds: 1
+    # -- source-controller readiness probe.
+    readinessProbe:
+      # -- Number of failure threshold.
+      failureThreshold: 3
+      # -- source-controller readiness probe HTTP request.
+      httpGet:
+        path: /
+        port: http
+        scheme: HTTP
+      # -- source-controller time interval readiness probe
+      periodSeconds: 10
+      # -- source-controller success threshold readiness probe
+      successThreshold: 1
+      # -- source-controller timeout seconds readiness probe
+      timeoutSeconds: 1
+    # -- Container ressources.
+    resources: {}
+      #limits:
+      #  cpu: "1"
+      #  memory: 1Gi
+      #requests:
+      #  cpu: 50m
+      #  memory: 64Mi
+    strategy:
+      type: Recreate
+    # -- Security contexts to set for all containers of the pod.
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
+    # -- Security contexts to set for all pod of the nodes.
+    podSecurityContext:
+      fsGroup: 1337
+    # -- Helm's name computing override.
+    nameOverride: ""
+    # -- Helm's fullname computing override.
+    fullnameOverride: ""
+
+kubeRBACProxy:
+  # -- Enable kube-rbac-proxy.
+  enabled: true
+  image:
+    # -- kube-rbac-proxy image repository.
+    repository: gcr.io/kubebuilder/kube-rbac-proxy
+    # -- kube-rbac-proxy image tag.
+    tag: v0.8.0
+    # -- kube-rbac-proxy image pull policy.
+    pullPolicy: IfNotPresent
+  # -- kube-rbac-proxy container required resources.
+  resources: {}
+
+serviceMonitor:
+  # -- Create a rtmp operator ServiceMonitor.
+  enabled: false
+  # -- Labels added to the ServiceMonitor.
+  additionalLabels: {}
+  # -- Annotations added to the ServiceMonitor.
+  annotations: {}
+  # -- Override prometheus operator scrapping interval.
+  interval: ""
+  # -- Override prometheus operator scrapping timeout.
+  scrapeTimeout: ""
+  # -- Relabellings to apply to samples before scraping.
+  relabelings: []
+
+serviceAccount:
+  # -- Create a rtmp operator ServiceAccount.
+  create: true
+  # -- Override rtmp operator ServiceAccount name.
+  name: ""
+  # -- Annotations added to the ServiceMonitor.
+  annotations: {}
