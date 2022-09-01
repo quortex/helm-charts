@@ -1,6 +1,6 @@
 # helm-controller-stack
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.2.0](https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 A Helm controller chart for Kubernetes allowing one to declaratively manage Helm chart releases
 
@@ -46,6 +46,9 @@ helm install helm-controller-stack quortex-public/helm-controller-stack -n helm-
 | helmController.manager.ressources | object | `{}` | Container ressources. |
 | helmController.manager.containerSecurityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"readOnlyRootFilesystem":true,"runAsNonRoot":true,"seccompProfile":{"type":"RuntimeDefault"}}` | Security contexts to set for all containers of the pod. |
 | helmController.manager.podSecurityContext | object | `{"fsGroup":1337}` | Security contexts to set for all pod of the nodes. |
+| helmController.manager.nodeSelector | object | `{}` | Node Selectors |
+| helmController.manager.tolerations | list | `[]` | Pod Tolerations |
+| helmController.manager.affinity | object | `{}` | Affinity |
 | sourceController.manager.replicaCount | int | `1` | Number of desired pods. |
 | sourceController.manager.podAnnotations | object | `{}` | Pods annotation. |
 | sourceController.manager.extraArgs | string | `nil` |  |
@@ -70,6 +73,9 @@ helm install helm-controller-stack quortex-public/helm-controller-stack -n helm-
 | sourceController.manager.podSecurityContext | object | `{"fsGroup":1337}` | Security contexts to set for all pod of the nodes. |
 | sourceController.manager.nameOverride | string | `""` | Helm's name computing override. |
 | sourceController.manager.fullnameOverride | string | `""` | Helm's fullname computing override. |
+| sourceController.manager.nodeSelector | object | `{}` | Node Selectors |
+| sourceController.manager.tolerations | list | `[]` | Pod Tolerations |
+| sourceController.manager.affinity | object | `{}` | Affinity |
 | kubeRBACProxy.enabled | bool | `true` | Enable kube-rbac-proxy. |
 | kubeRBACProxy.image.repository | string | `"gcr.io/kubebuilder/kube-rbac-proxy"` | kube-rbac-proxy image repository. |
 | kubeRBACProxy.image.tag | string | `"v0.8.0"` | kube-rbac-proxy image tag. |

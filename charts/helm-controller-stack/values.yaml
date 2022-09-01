@@ -70,6 +70,13 @@ helmController:
     # -- Security contexts to set for all pod of the nodes.
     podSecurityContext:
       fsGroup: 1337
+    # -- Node Selectors
+    nodeSelector: {}
+    # -- Pod Tolerations
+    tolerations: []
+    # -- Affinity
+    affinity: {}
+
 
 # Value for the source-controller
 sourceController:
@@ -147,6 +154,12 @@ sourceController:
     nameOverride: ""
     # -- Helm's fullname computing override.
     fullnameOverride: ""
+    # -- Node Selectors
+    nodeSelector: {}
+    # -- Pod Tolerations
+    tolerations: []
+    # -- Affinity
+    affinity: {}
 
 kubeRBACProxy:
   # -- Enable kube-rbac-proxy.
