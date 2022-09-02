@@ -1,6 +1,6 @@
 # helm-controller-stack
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.3.0](https://img.shields.io/badge/Version-0.3.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 A Helm controller chart for Kubernetes allowing one to declaratively manage Helm chart releases
 
@@ -75,12 +75,12 @@ helm install helm-controller-stack quortex-public/helm-controller-stack -n helm-
 | kubeRBACProxy.image.tag | string | `"v0.8.0"` | kube-rbac-proxy image tag. |
 | kubeRBACProxy.image.pullPolicy | string | `"IfNotPresent"` | kube-rbac-proxy image pull policy. |
 | kubeRBACProxy.resources | object | `{}` | kube-rbac-proxy container required resources. |
-| serviceMonitor.enabled | bool | `false` | Create a rtmp operator ServiceMonitor. |
-| serviceMonitor.additionalLabels | object | `{}` | Labels added to the ServiceMonitor. |
-| serviceMonitor.annotations | object | `{}` | Annotations added to the ServiceMonitor. |
-| serviceMonitor.interval | string | `""` | Override prometheus operator scrapping interval. |
-| serviceMonitor.scrapeTimeout | string | `""` | Override prometheus operator scrapping timeout. |
-| serviceMonitor.relabelings | list | `[]` | Relabellings to apply to samples before scraping. |
+| serviceMonitor.enabled | bool | `false` | If true, a ServiceMonitor CRD is created for a prometheus operator. https://github.com/coreos/prometheus-operator  |
+| serviceMonitor.scheme | string | `"http"` | HTTP scheme to use for scraping. |
+| serviceMonitor.labels | object | `{}` | Labels to add to ServiceMonitor. |
+| serviceMonitor.interval | string | `"15s"` | Interval at which metrics should be scraped. |
+| serviceMonitor.scrapeTimeout | string | `"15s"` | Timeout after which the scrape is ended. |
+| serviceMonitor.relabelings | list | `[]` | Relabelling configuration (dynamic rewriting of the label set). |
 | serviceAccount.create | bool | `true` | Create a rtmp operator ServiceAccount. |
 | serviceAccount.name | string | `""` | Override rtmp operator ServiceAccount name. |
 | serviceAccount.annotations | object | `{}` | Annotations added to the ServiceMonitor. |

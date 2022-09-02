@@ -2,9 +2,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "helm-controller-stack.fullname" . }}-metrics-service
+  name: {{ include "helm-controller-stack.helmControllerFullname" . }}-metrics-service
   labels:
-    {{- include "helm-controller-stack.labels" . | nindent 4 }}
+    {{- include "helm-controller-stack.helmControllerLabels" . | nindent 4 }}
 spec:
   ports:
     {{- if .Values.kubeRBACProxy.enabled }}
@@ -19,4 +19,4 @@ spec:
       protocol: TCP
     {{- end }}
   selector:
-    {{- include "helm-controller-stack.selectorLabels" . | nindent 4 }}
+    {{- include "helm-controller-stack.helmControllerSelectorLabels" . | nindent 4 }}
