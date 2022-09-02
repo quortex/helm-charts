@@ -1,4 +1,3 @@
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -19,7 +18,25 @@ spec:
       labels:
         {{- include "helm-controller-stack.helmControllerLabels" . | nindent 8 }}
     spec:
+      serviceAccountName: {{ include "helm-controller-stack.helmControllerFullname" . }}
       containers:
+    {{- with .Values.kubeRBACProxy }}
+      {{- if .enabled }}
+      - name: kube-rbac-proxy
+        image: "{{ .image.repository }}:{{ .image.tag }}"
+        args:
+          - --secure-listen-address=0.0.0.0:8443
+          - --upstream=http://127.0.0.1:8080/
+          - --logtostderr=true
+          - --v=10
+        imagePullPolicy: {{ .image.pullPolicy }}
+        ports:
+          - containerPort: 8443
+            name: https-metrics
+        resources:
+          {{- toYaml .resources | nindent 12 }}
+      {{- end }}
+    {{- end }}
       - args:
         - --watch-all-namespaces
         - --enable-leader-election
@@ -41,7 +58,7 @@ spec:
         name: manager
         ports:
         - containerPort: 8080
-          name: http-prom
+          name: http-metrics
           protocol: TCP
         - containerPort: 9440
           name: healthz

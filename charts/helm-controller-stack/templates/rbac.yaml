@@ -1,80 +1,5 @@
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: {{ include "helm-controller-stack.fullname" . }}-manager-role
-rules:
-- apiGroups:
-  - ""
-  resources:
-  - events
-  verbs:
-  - create
-  - patch
-- apiGroups:
-  - helm.toolkit.fluxcd.io
-  resources:
-  - helmreleases
-  verbs:
-  - create
-  - delete
-  - get
-  - list
-  - patch
-  - update
-  - watch
-- apiGroups:
-  - helm.toolkit.fluxcd.io
-  resources:
-  - helmreleases/finalizers
-  verbs:
-  - create
-  - delete
-  - get
-  - patch
-  - update
-- apiGroups:
-  - helm.toolkit.fluxcd.io
-  resources:
-  - helmreleases/status
-  verbs:
-  - get
-  - patch
-  - update
-- apiGroups:
-  - source.toolkit.fluxcd.io
-  resources:
-  - helmcharts
-  verbs:
-  - get
-  - list
-  - watch
-- apiGroups:
-  - source.toolkit.fluxcd.io
-  resources:
-  - helmcharts/status
-  verbs:
-  - get
-
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: {{ include "helm-controller-stack.fullname" . }}-reconciler-role
-rules:
-- apiGroups:
-  - '*'
-  resources:
-  - '*'
-  verbs:
-  - '*'
-- nonResourceURLs:
-  - '*'
-  verbs:
-  - '*'
-
----
-apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: {{ include "helm-controller-stack.fullname" . }}-leader-election-role
@@ -129,33 +54,8 @@ roleRef:
   name: {{ include "helm-controller-stack.fullname" . }}-leader-election-role
 subjects:
 - kind: ServiceAccount
-  name: default
+  name: {{ include "helm-controller-stack.helmControllerFullname" . }}
   namespace: {{ $.Release.Namespace }}
-
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: {{ include "helm-controller-stack.fullname" . }}-manager-rolebinding
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: {{ include "helm-controller-stack.fullname" . }}-manager-role
-subjects:
 - kind: ServiceAccount
-  name: default
-  namespace: {{ $.Release.Namespace }}
-
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: {{ include "helm-controller-stack.fullname" . }}-reconciler-rolebinding
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: {{ include "helm-controller-stack.fullname" . }}-reconciler-role
-subjects:
-- kind: ServiceAccount
-  name: default
+  name: {{ include "helm-controller-stack.sourceControllerFullname" . }}
   namespace: {{ $.Release.Namespace }}
