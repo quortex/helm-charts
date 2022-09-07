@@ -21,8 +21,8 @@ spec:
       - {{ .Release.Namespace | quote }}
   endpoints:
   - port: {{ ternary "https-metrics" "http-metrics" $.Values.kubeRBACProxy.enabled }}
+    scheme: {{ ternary "https" "http" $.Values.kubeRBACProxy.enabled }}
     {{- if $.Values.kubeRBACProxy.enabled }}
-    scheme: https
     bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
     tlsConfig:
       insecureSkipVerify: true
