@@ -23,20 +23,20 @@ all: generate doc
 .PHONY: generate-helm-controller
 generate-helm-controller: yq kustomize
 	@TMPDIR=$$(mktemp -d) && git clone --branch ${HELM_CONTROLLER_VERSION} --single-branch --depth 1 git@github.com:fluxcd/helm-controller.git $${TMPDIR}/repo && \
-	${YQ} -y '.metadata.name = ("PREFIX-" + .metadata.name)' $${TMPDIR}/repo/config/rbac/role.yaml | \
+		${YQ} -y '.metadata.name = ("PREFIX-" + .metadata.name)' $${TMPDIR}/repo/config/rbac/role.yaml | \
 		sed "s/PREFIX/{{ include \"helm-controller-stack.helmControllerFullname\" . }}/" > ./templates/helmController/manager_role.yaml && \
-	${KUSTOMIZE} build $${TMPDIR}/repo/config/default/ > $${TMPDIR}/result_helm_contoller.yaml && \
-	${YQ} -y 'select(.kind=="CustomResourceDefinition")' $${TMPDIR}/result_helm_contoller.yaml > ./crds/crds_helm_contoller.yaml
-	rm -rf $${TMPDIR}
+		${KUSTOMIZE} build $${TMPDIR}/repo/config/default/ > $${TMPDIR}/result_helm_contoller.yaml && \
+		${YQ} -y 'select(.kind=="CustomResourceDefinition")' $${TMPDIR}/result_helm_contoller.yaml > ./crds/crds_helm_contoller.yaml && \
+		rm -rf $${TMPDIR}
 
 .PHONY: generate-source-controller
 generate-source-controller: yq kustomize
 	@TMPDIR=$$(mktemp -d) && git clone --branch ${SOURCE_CONTROLLER_VERSION} --single-branch --depth 1 git@github.com:fluxcd/source-controller.git $${TMPDIR}/repo && \
-	${YQ} -y '.metadata.name = ("PREFIX-" + .metadata.name)' $${TMPDIR}/repo/config/rbac/role.yaml | \
+		${YQ} -y '.metadata.name = ("PREFIX-" + .metadata.name)' $${TMPDIR}/repo/config/rbac/role.yaml | \
 		sed "s/PREFIX/{{ include \"helm-controller-stack.sourceControllerFullname\" . }}/" > ./templates/sourceController/manager_role.yaml && \
-	${KUSTOMIZE} build $${TMPDIR}/repo/config/default/ > $${TMPDIR}/result_source_contoller.yaml && \
-	${YQ} -y 'select(.kind=="CustomResourceDefinition")' $${TMPDIR}/result_source_contoller.yaml > ./crds/crds_source_contoller.yaml
-	rm -rf $${TMPDIR}
+		${KUSTOMIZE} build $${TMPDIR}/repo/config/default/ > $${TMPDIR}/result_source_contoller.yaml && \
+		${YQ} -y 'select(.kind=="CustomResourceDefinition")' $${TMPDIR}/result_source_contoller.yaml > ./crds/crds_source_contoller.yaml && \
+		rm -rf $${TMPDIR}
 
 .PHONY: generate
 generate: generate-source-controller generate-helm-controller ## Generate some manifests from source repositories.
