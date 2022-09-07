@@ -1,0 +1,40 @@
+{{- if .Values.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ template "helm-controller-stack.fullname" . }}
+  labels:
+    {{- include "helm-controller-stack.labels" . | nindent 4 }}
+    {{- with .Values.serviceMonitor.labels }}
+      {{- toYaml . | indent 4 }}
+    {{- end }}
+  {{- with .Values.serviceMonitor.annotations }}
+  annotations:
+    {{- toYaml . | indent 4 }}
+  {{- end }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "helm-controller-stack.labels" . | nindent 6 }}
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace | quote }}
+  endpoints:
+  - port: {{ ternary "https-metrics" "http-metrics" $.Values.kubeRBACProxy.enabled }}
+    scheme: {{ ternary "https" "http" $.Values.kubeRBACProxy.enabled }}
+    {{- if $.Values.kubeRBACProxy.enabled }}
+    bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+    tlsConfig:
+      insecureSkipVerify: true
+    {{- end }}
+    {{- if .Values.serviceMonitor.interval }}
+    interval: {{ .Values.serviceMonitor.interval }}
+    {{- end }}
+    {{- if .Values.serviceMonitor.scrapeTimeout }}
+    scrapeTimeout: {{ .Values.serviceMonitor.scrapeTimeout }}
+    {{- end }}
+    {{- if .Values.serviceMonitor.relabelings }}
+    relabelings:
+      {{- toYaml .Values.serviceMonitor.relabelings | nindent 6 }}
+    {{- end }}
+{{- end }}

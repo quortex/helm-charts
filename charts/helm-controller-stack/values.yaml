@@ -70,6 +70,13 @@ helmController:
     # -- Security contexts to set for all pod of the nodes.
     podSecurityContext:
       fsGroup: 1337
+    # -- Node Selectors
+    nodeSelector: {}
+    # -- Pod Tolerations
+    tolerations: []
+    # -- Affinity
+    affinity: {}
+
 
 # Value for the source-controller
 sourceController:
@@ -89,7 +96,7 @@ sourceController:
       # -- source-controller container image pull policy.
       pullPolicy: IfNotPresent
       # -- source-controller image tag (default is the chart appVersion).
-      tag: v0.27.0
+      tag: v0.28.0
     # -- source-controller liveness probe.
     livenessProbe:
       # -- Number of failure threshold.
@@ -147,10 +154,16 @@ sourceController:
     nameOverride: ""
     # -- Helm's fullname computing override.
     fullnameOverride: ""
+    # -- Node Selectors
+    nodeSelector: {}
+    # -- Pod Tolerations
+    tolerations: []
+    # -- Affinity
+    affinity: {}
 
 kubeRBACProxy:
   # -- Enable kube-rbac-proxy.
-  enabled: true
+  enabled: false
   image:
     # -- kube-rbac-proxy image repository.
     repository: gcr.io/kubebuilder/kube-rbac-proxy
@@ -162,17 +175,17 @@ kubeRBACProxy:
   resources: {}
 
 serviceMonitor:
-  # -- Create a rtmp operator ServiceMonitor.
+  # -- If true, a ServiceMonitor is created for a prometheus operator.
+  # https://github.com/coreos/prometheus-operator
+  #
   enabled: false
-  # -- Labels added to the ServiceMonitor.
-  additionalLabels: {}
-  # -- Annotations added to the ServiceMonitor.
-  annotations: {}
-  # -- Override prometheus operator scrapping interval.
-  interval: ""
-  # -- Override prometheus operator scrapping timeout.
-  scrapeTimeout: ""
-  # -- Relabellings to apply to samples before scraping.
+  # -- Labels to add to ServiceMonitor.
+  labels: {}
+  # -- Interval at which metrics should be scraped.
+  interval: 15s
+  # -- Timeout after which the scrape is ended.
+  scrapeTimeout: 15s
+  # -- Relabelling configuration (dynamic rewriting of the label set).
   relabelings: []
 
 serviceAccount:
