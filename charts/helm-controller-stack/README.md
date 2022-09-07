@@ -76,7 +76,6 @@ helm install helm-controller-stack quortex-public/helm-controller-stack -n helm-
 | kubeRBACProxy.image.pullPolicy | string | `"IfNotPresent"` | kube-rbac-proxy image pull policy. |
 | kubeRBACProxy.resources | object | `{}` | kube-rbac-proxy container required resources. |
 | serviceMonitor.enabled | bool | `false` | If true, a ServiceMonitor is created for a prometheus operator. https://github.com/coreos/prometheus-operator  |
-| serviceMonitor.scheme | string | `"https"` | HTTP scheme to use for scraping. |
 | serviceMonitor.labels | object | `{}` | Labels to add to ServiceMonitor. |
 | serviceMonitor.interval | string | `"15s"` | Interval at which metrics should be scraped. |
 | serviceMonitor.scrapeTimeout | string | `"15s"` | Timeout after which the scrape is ended. |

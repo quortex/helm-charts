@@ -166,8 +166,6 @@ serviceMonitor:
   # https://github.com/coreos/prometheus-operator
   #
   enabled: false
-  # -- HTTP scheme to use for scraping.
-  scheme: https
   # -- Labels to add to ServiceMonitor.
   labels: {}
   # -- Interval at which metrics should be scraped.
