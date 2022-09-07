@@ -28,8 +28,7 @@ generate-helm-controller: yq kustomize
 	${KUSTOMIZE} build $${TMPDIR}/repo/config/default/ > $${TMPDIR}/result_helm_contoller.yaml && \
 	${YQ} -y 'select(.kind=="CustomResourceDefinition")' $${TMPDIR}/result_helm_contoller.yaml > ./crds/crds_helm_contoller.yaml && \
 	${YQ} -y 'select(.kind=="ValidatingWebhookConfiguration" or .kind=="MutatingWebhookConfiguration")' $${TMPDIR}/result_helm_contoller.yaml | \
-		sed -e 's|name: helm-controller-stack|name: {{ include \"helm-controller-stackca-from: {{ .Release.Namespace }}/{{ include \"helm-controller-stack.fullname\" . }}-serving-cert|' \
-			-e 's|namespace: .*|namespace: {{ .Release.Namespace }}|' > ./templates/helmController/webhooks.yaml; \
+		sed -e 's|name: helm-controller-stack|name: {{ include \"helm-controller-stackca-from: {{ .Release.Namespace }}/{{ include \"helm-controller-stack.fullname\" . }}-serving-cert|'
 	rm -rf $${TMPDIR}
 
 .PHONY: generate-source-controller
@@ -40,8 +39,7 @@ generate-source-controller: yq kustomize
 	${KUSTOMIZE} build $${TMPDIR}/repo/config/default/ > $${TMPDIR}/result_source_contoller.yaml && \
 	${YQ} -y 'select(.kind=="CustomResourceDefinition")' $${TMPDIR}/result_source_contoller.yaml > ./crds/crds_source_contoller.yaml && \
 	${YQ} -y 'select(.kind=="ValidatingWebhookConfiguration" or .kind=="MutatingWebhookConfiguration")' $${TMPDIR}/result_source_contoller.yaml | \
-		sed -e 's|name: helm-controller-stack|name: {{ include \"helm-controller-stackca-from: {{ .Release.Namespace }}/{{ include \"helm-controller-stack.fullname\" . }}-serving-cert|' \
-			-e 's|namespace: .*|namespace: {{ .Release.Namespace }}|' > ./templates/sourceController/webhooks.yaml; \
+		sed -e 's|name: helm-controller-stack|name: {{ include \"helm-controller-stackca-from: {{ .Release.Namespace }}/{{ include \"helm-controller-stack.fullname\" . }}-serving-cert|'
 	rm -rf $${TMPDIR}
 
 .PHONY: generate

@@ -78,6 +78,18 @@ spec:
       securityContext:
         {{- toYaml .podSecurityContext | nindent 8 }}
       {{- end }}
+      {{- with .Values.helmController.manager.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.helmController.manager.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.helmController.manager.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       volumes:
       - emptyDir: {}
         name: temp
