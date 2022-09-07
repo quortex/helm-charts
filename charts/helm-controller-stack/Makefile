@@ -26,9 +26,7 @@ generate-helm-controller: yq kustomize
 	${YQ} -y '.metadata.name = ("PREFIX-" + .metadata.name)' $${TMPDIR}/repo/config/rbac/role.yaml | \
 		sed "s/PREFIX/{{ include \"helm-controller-stack.helmControllerFullname\" . }}/" > ./templates/helmController/manager_role.yaml && \
 	${KUSTOMIZE} build $${TMPDIR}/repo/config/default/ > $${TMPDIR}/result_helm_contoller.yaml && \
-	${YQ} -y 'select(.kind=="CustomResourceDefinition")' $${TMPDIR}/result_helm_contoller.yaml > ./crds/crds_helm_contoller.yaml && \
-	${YQ} -y 'select(.kind=="ValidatingWebhookConfiguration" or .kind=="MutatingWebhookConfiguration")' $${TMPDIR}/result_helm_contoller.yaml | \
-		sed -e 's|name: helm-controller-stack|name: {{ include \"helm-controller-stackca-from: {{ .Release.Namespace }}/{{ include \"helm-controller-stack.fullname\" . }}-serving-cert|'
+	${YQ} -y 'select(.kind=="CustomResourceDefinition")' $${TMPDIR}/result_helm_contoller.yaml > ./crds/crds_helm_contoller.yaml
 	rm -rf $${TMPDIR}
 
 .PHONY: generate-source-controller
@@ -37,9 +35,7 @@ generate-source-controller: yq kustomize
 	${YQ} -y '.metadata.name = ("PREFIX-" + .metadata.name)' $${TMPDIR}/repo/config/rbac/role.yaml | \
 		sed "s/PREFIX/{{ include \"helm-controller-stack.sourceControllerFullname\" . }}/" > ./templates/sourceController/manager_role.yaml && \
 	${KUSTOMIZE} build $${TMPDIR}/repo/config/default/ > $${TMPDIR}/result_source_contoller.yaml && \
-	${YQ} -y 'select(.kind=="CustomResourceDefinition")' $${TMPDIR}/result_source_contoller.yaml > ./crds/crds_source_contoller.yaml && \
-	${YQ} -y 'select(.kind=="ValidatingWebhookConfiguration" or .kind=="MutatingWebhookConfiguration")' $${TMPDIR}/result_source_contoller.yaml | \
-		sed -e 's|name: helm-controller-stack|name: {{ include \"helm-controller-stackca-from: {{ .Release.Namespace }}/{{ include \"helm-controller-stack.fullname\" . }}-serving-cert|'
+	${YQ} -y 'select(.kind=="CustomResourceDefinition")' $${TMPDIR}/result_source_contoller.yaml > ./crds/crds_source_contoller.yaml
 	rm -rf $${TMPDIR}
 
 .PHONY: generate
