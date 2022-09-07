@@ -54,7 +54,7 @@ helm install helm-controller-stack quortex-public/helm-controller-stack -n helm-
 | sourceController.manager.extraArgs | string | `nil` |  |
 | sourceController.manager.image.repository | string | `"ghcr.io/fluxcd/source-controller"` | source-controller image repository. |
 | sourceController.manager.image.pullPolicy | string | `"IfNotPresent"` | source-controller container image pull policy. |
-| sourceController.manager.image.tag | string | `"v0.27.0"` | source-controller image tag (default is the chart appVersion). |
+| sourceController.manager.image.tag | string | `"v0.28.0"` | source-controller image tag (default is the chart appVersion). |
 | sourceController.manager.livenessProbe | object | `{"failureThreshold":3,"httpGet":{"path":"/healthz","port":"healthz","scheme":"HTTP"},"periodSeconds":10,"successThreshold":1,"timeoutSeconds":1}` | source-controller liveness probe. |
 | sourceController.manager.livenessProbe.failureThreshold | int | `3` | Number of failure threshold. |
 | sourceController.manager.livenessProbe.httpGet | object | `{"path":"/healthz","port":"healthz","scheme":"HTTP"}` | source-controller liveness probe HTTP request. |
