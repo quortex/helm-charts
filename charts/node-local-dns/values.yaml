@@ -9,7 +9,7 @@ fullnameOverride: ""
 
 image:
   # -- node-local-dns image repository.
-  repository: k8s.gcr.io/dns/k8s-dns-node-cache
+  repository: registry.k8s.io/dns/k8s-dns-node-cache
   # -- node-local-dns container image pull policy.
   pullPolicy: IfNotPresent
   # -- node-local-dns image tag (default is the chart appVersion).
