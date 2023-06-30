@@ -1,6 +1,6 @@
 # node-local-dns
 
-![Version: 0.1.1](https://img.shields.io/badge/Version-0.1.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.21.1](https://img.shields.io/badge/AppVersion-1.21.1-informational?style=flat-square)
+![Version: 0.2.0](https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.22.20](https://img.shields.io/badge/AppVersion-1.22.20-informational?style=flat-square)
 
 NodeLocal DNSCache improves Cluster DNS performance by running a dns caching agent on cluster nodes as a DaemonSet.
 
@@ -28,7 +28,7 @@ helm install node-local-dns quortex-public/node-local-dns -n kube-system
 |-----|------|---------|-------------|
 | nameOverride | string | `""` | Helm's name computing override. |
 | fullnameOverride | string | `""` | Helm's fullname computing override. |
-| image.repository | string | `"k8s.gcr.io/dns/k8s-dns-node-cache"` | node-local-dns image repository. |
+| image.repository | string | `"registry.k8s.io/dns/k8s-dns-node-cache"` | node-local-dns image repository. |
 | image.pullPolicy | string | `"IfNotPresent"` | node-local-dns container image pull policy. |
 | image.tag | string | `""` | node-local-dns image tag (default is the chart appVersion). |
 | imagePullSecrets | list | `[]` | A list of secrets used to pull containers images. |
@@ -37,7 +37,7 @@ helm install node-local-dns quortex-public/node-local-dns -n kube-system
 | serviceAccount.name | string | `""` | The name of the service account to use. If not set and create is true, a name is generated using the fullname template |
 | updateStrategy | object | `{"rollingUpdate":{"maxUnavailable":"10%"}}` | An update strategy to replace existing DaemonSet pods with new pods. |
 | priorityClassName | string | `"system-node-critical"` | If specified, indicates the pod's priority. |
-| securityContext | object | `{"privileged":true}` | node-local-dns container security context. |
+| securityContext | object | `{"capabilities":{"add":["NET_ADMIN"]}}` | node-local-dns container security context. |
 | resources | object | `{"requests":{"cpu":"25m","memory":"5Mi"}}` | node-local-dns resources. |
 | nodeSelector | object | `{}` | Node labels for pod assignment. |
 | tolerations | list | `[{"key":"CriticalAddonsOnly","operator":"Exists"},{"effect":"NoExecute","operator":"Exists"},{"effect":"NoSchedule","operator":"Exists"}]` | Node tolerations for scheduling to nodes with taints. |
@@ -48,7 +48,7 @@ helm install node-local-dns quortex-public/node-local-dns -n kube-system
 | config.localDns | string | `"169.254.20.10"` | localDns is the local listen IP address chosen for NodeLocal DNSCache. |
 | config.dnsServer | string | `""` | The dns server address Could be retrieved with `kubectl get svc kube-dns -n kube-system -o jsonpath={.spec.clusterIP}` |
 | config.clusterDomain | string | `"cluster.local"` | The cluster domain |
-| serviceMonitor.enabled | bool | `false` | If true, a ServiceMonitor CRD is created for a prometheus operator. https://github.com/coreos/prometheus-operator |
+| serviceMonitor.enabled | bool | `false` | If true, a ServiceMonitor CRD is created for a prometheus operator. https://github.com/coreos/prometheus-operator  |
 | serviceMonitor.scheme | string | `"http"` | HTTP scheme to use for scraping. |
 | serviceMonitor.labels | object | `{}` | Labels to add to ServiceMonitor. |
 | serviceMonitor.interval | string | `"15s"` | Interval at which metrics should be scraped. |
