@@ -37,7 +37,9 @@ priorityClassName: system-node-critical
 
 # -- node-local-dns container security context.
 securityContext:
-  privileged: true
+  capabilities:
+    add:
+    - NET_ADMIN
 
 # -- node-local-dns resources.
 resources:
