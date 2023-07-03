@@ -52,6 +52,17 @@ entries:
     version: 0.1.0
   node-local-dns:
   - apiVersion: v2
+    appVersion: 1.22.20
+    created: "2023-07-03T15:52:47.906695636Z"
+    description: NodeLocal DNSCache improves Cluster DNS performance by running a
+      dns caching agent on cluster nodes as a DaemonSet.
+    digest: 707ed64aaf6f388a7b7cc5691ca9726ec5cdee67a7d92a073c0d263b6d9dc1fc
+    name: node-local-dns
+    type: application
+    urls:
+    - https://github.com/quortex/helm-charts/releases/download/node-local-dns-0.2.0/node-local-dns-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
     appVersion: 1.21.1
     created: "2023-04-12T15:09:02.890507964Z"
     description: NodeLocal DNSCache improves Cluster DNS performance by running a
@@ -84,4 +95,4 @@ entries:
     urls:
     - https://github.com/quortex/helm-charts/releases/download/node-local-dns-0.1.0/node-local-dns-0.1.0.tgz
     version: 0.1.0
-generated: "2023-04-12T15:09:02.890525864Z"
+generated: "2023-07-03T15:52:47.906759736Z"
