@@ -3,10 +3,15 @@
 # Declare variables to be passed into your templates.
 
 # -- A string to evaluate as a template for rendering kubernetes manifests.
-manifests: ""
+# Deprecated: use objects instead.
+manifests:
+  ""
   #   apiVersion: apps/v1
   #   kind: ConfigMap
   #   metadata:
   #     name: {{ .name }}
   #   data:
   #     something: {{ .something }}
+
+# -- A list of string or objects to evaluate as a template for rendering kubernetes manifests.
+objects: []

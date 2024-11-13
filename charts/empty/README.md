@@ -1,6 +1,6 @@
 # empty
 
-![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 1.1.0](https://img.shields.io/badge/Version-1.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 An empty chart to deploy arbitrary manifests.
 
@@ -22,5 +22,6 @@ helm install my-release quortex-public/empty -n kube-system
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| manifests | string | `""` | A string to evaluate as a template for rendering kubernetes manifests. |
+| manifests | string | `""` | A string to evaluate as a template for rendering kubernetes manifests. Deprecated: use objects instead. |
+| objects | list | `[]` | A list of string or objects to evaluate as a template for rendering kubernetes manifests. |
 
